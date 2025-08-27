@@ -364,6 +364,7 @@ class MultiBallSimulationAnimatorMain:
         screen = getattr(self, "_screen", None)
         if screen is None:
             self._screen = pygame.display.set_mode(self.screen_dims)
+            pygame.display.set_caption("Gas Simulator")
         return self._screen
     
     @property
