@@ -3,8 +3,11 @@ import random
 
 from gas_simulation.ball_collision_animator import MultiBallSimulationAnimatorMain
 
-def runSimulation1(framerate: int, print_mechE: bool=False,\
-        check_overlap: bool=True) -> None:
+def runSimulation1(
+    framerate: int,
+    print_mechE: bool=False,
+    check_overlap: bool=True,
+) -> None:
     sim1 = MultiBallSimulationAnimatorMain(dist_unit=20,\
             arena_dims=(20, 20),\
             framerate=framerate,\
@@ -17,9 +20,13 @@ def runSimulation1(framerate: int, print_mechE: bool=False,\
     sim1.run(print_mechE=print_mechE, check_overlap=check_overlap)
     return
 
-def runSimulation2(framerate: int, n_rows: int,\
-        print_mechE: bool=False, check_overlap: bool=True,\
-        print_n_balls: bool=False) -> None:
+def runSimulation2(
+    framerate: int,
+    n_rows: int,
+    print_mechE: bool=False,
+    check_overlap: bool=True,
+    print_n_balls: bool=False,
+) -> None:
     d = 50
     sim2 = MultiBallSimulationAnimatorMain(dist_unit=12,\
             arena_dims=(d, d), framerate=framerate,\

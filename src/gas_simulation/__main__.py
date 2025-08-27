@@ -7,7 +7,8 @@ from gas_simulation.example_simulation_animations import (
 
 def main() -> None:
     runSimulation1(
-        60, print_mechE=False,
+        framerate=60,
+        print_mechE=False,
         check_overlap=True,
     )
     runSimulation2(
@@ -15,7 +16,7 @@ def main() -> None:
         n_rows=3,
         print_mechE=False,
         check_overlap=True,
-        print_n_balls=True
+        print_n_balls=True,
     )
 
 if __name__ == "__main__":

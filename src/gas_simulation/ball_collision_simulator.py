@@ -13,9 +13,12 @@ import math
 
 from gas_simulation.utils import Real
 
-def closestApproachVector(r1: Tuple[Real], r2: Tuple[Real],\
-        v: Tuple[Real], v_abs_sq: Real)\
-        -> Tuple[Union[Tuple[Real], Real]]:
+def closestApproachVector(
+    r1: Tuple[Real],
+    r2: Tuple[Real],
+    v: Tuple[Real],
+    v_abs_sq: Real
+) -> Tuple[Union[Tuple[Real], Real]]:
     """
     Given two points in the n-dimensional real vector space (i.e.
     R ** n where n is a strictly positive integer) at position vectors
@@ -50,7 +53,7 @@ def closestApproachVector(r1: Tuple[Real], r2: Tuple[Real],\
     r1_mod = [x + y * dt for x, y in zip(r1, v)]
     return tuple(x - y for x, y in zip(r2, r1_mod)), dt
 
-class Ball:
+class Ball(object):
     """
     Object representing a ball in an instance of MultiBallSimulation,
     a simulation in real n-dimensional space of perfectly rigid
@@ -286,9 +289,15 @@ class Ball:
                 Ball object at the time equal to attribute t (the
                 current time).
     """
-    def __init__(self, sim: "MultiBallSimulation", m: Real,\
-            radius: Real, r0: Tuple[Real],\
-            v0: Tuple[Real], t0: Real=0):
+    def __init__(
+        self,
+        sim: "MultiBallSimulation",
+        m: Real,
+        radius: Real,
+        r0: Tuple[Real],
+        v0: Tuple[Real],
+        t0: Real=0,
+    ):
         self._sim = sim
         self._m = m
         self._radius = radius
@@ -516,8 +525,10 @@ class Ball:
         """
         return tuple(v + a * dt for v, a in zip(self._v0, self.g))
     
-    def _positionAndVelocityAfterTimeIncrement(self, dt: Real)\
-            -> Tuple[Tuple[Real]]:
+    def _positionAndVelocityAfterTimeIncrement(
+        self,
+        dt: Real,
+    ) -> Tuple[Tuple[Real]]:
         """
         Calculates the position and velocity vectors of the Ball object
         after a time interval dt from the reference time (represented
@@ -592,8 +603,10 @@ class Ball:
         dt = t - self._t0
         return self._velocityAfterTimeIncrement(dt)
     
-    def positionAndVelocityAtTime(self, t: Real)\
-            -> Tuple[Tuple[Real]]:
+    def positionAndVelocityAtTime(
+        self,
+        t: Real,
+    ) -> Tuple[Tuple[Real]]:
         """
         Calculates the position and velocity vectors of the Ball object
         at time t assuming that the Ball object does not experience any
@@ -619,7 +632,10 @@ class Ball:
         dt = t - self._t0
         return self._positionAndVelocityAfterTimeIncrement(dt)
     
-    def _updateTime0(self, t0: Real) -> None:
+    def _updateTime0(
+        self,
+        t0: Real,
+    ) -> None:
         """
         Resets the reference time to the time represented by t0, also
         updating the reference position and velocity. Assumes no
@@ -676,8 +692,10 @@ class Ball:
         self.updateNextWallHeapSingleDimension(i)
         return
     
-    def identifyOtherBallNextCollision(self, other: "Ball")\
-            -> Tuple[Union[Real, Tuple[Real]]]:
+    def identifyOtherBallNextCollision(
+        self,
+        other: "Ball"
+    ) -> Tuple[Union[Real, Tuple[Real]]]:
         """
         Given another Ball object calculates if and when the next
         collision between this Ball object and that Ball object will
@@ -776,9 +794,13 @@ class Ball:
         v1_zmf = tuple(x - y for x, y in zip(v1, v0))
         return t2, contact_displ_vec, v1_zmf#, v2_zmf
     
-    def progressToNextOtherBallCollision(self, other: "Ball",\
-            t_collide: Real, contact_displ_vec: Tuple[Real],\
-            v1_zmf: Real) -> None:
+    def progressToNextOtherBallCollision(
+        self,
+        other: "Ball",
+        t_collide: Real,
+        contact_displ_vec: Tuple[Real],
+        v1_zmf: Real
+    ) -> None:
         """
         Increases current time to correspond to the time immediately
         after next occasion this Ball object collides with another
@@ -930,7 +952,7 @@ class Ball:
         return self.calculateKineticEnergy() +\
                 self.calculatePotentialEnergy()
 
-class MultiBallSimulation:
+class MultiBallSimulation(object):
     """
     Class representing simulations in real n-dimensional space (where
     n is a strictly positive integer) with the following properties:
@@ -1202,8 +1224,11 @@ class MultiBallSimulation:
                 checks of detectAnyBallOutsideBox() and
                 detectAnyBallsOverlap().
     """
-    def __init__(self, box_dims: Tuple[Real],\
-            g: Union[Real, Tuple[Real]]=0):
+    def __init__(
+        self,
+        box_dims: Tuple[Real],
+        g: Union[Real, Tuple[Real]]=0,
+    ):
         
         self._box_dims = box_dims
         self._box_interior_ranges = tuple((0, x) for x in box_dims)
@@ -1233,10 +1258,15 @@ class MultiBallSimulation:
     def g(self):
         return self._g
     
-    def addBall(self, m: Real, radius: Real,\
-            r0: Tuple[Real], v0: Tuple[Real],\
-            check_overlap: bool=True,\
-            balls_t_updated: bool=False) -> bool:
+    def addBall(
+        self,
+        m: Real,
+        radius: Real,
+        r0: Tuple[Real],
+        v0: Tuple[Real],
+        check_overlap: bool=True,
+        balls_t_updated: bool=False,
+    ) -> bool:
         """
         Adds a Ball object to the simulation at the current time,
         representing a ball with mass in n-dimensional space (where
@@ -1328,8 +1358,11 @@ class MultiBallSimulation:
         self.ball_states.append(0)
         return True
     
-    def _ballsCollisionHeapEntry(self, idx1: int, idx2: int)\
-            -> Tuple[Union[Real, Tuple[Real]]]:
+    def _ballsCollisionHeapEntry(
+        self,
+        idx1: int,
+        idx2: int,
+    ) -> Tuple[Union[Real, Tuple[Real]]]:
         """
         Finds the next time (if any) two specific Ball objects in the
         simulation are due to collide with each other and provides
@@ -1425,8 +1458,11 @@ class MultiBallSimulation:
         self.balls_collision_heaps = res
         return
     
-    def _resetBallsCollisionHeap(self, idx: int, excl: Set[int])\
-            -> bool:
+    def _resetBallsCollisionHeap(
+        self,
+        idx: int,
+        excl: Set[int],
+    ) -> bool:
         """
         Completely resets the min-heap at index idx of the attribute
         balls_collision_heaps based on the current trajectories of the
@@ -1497,8 +1533,11 @@ class MultiBallSimulation:
             return True
         return False
     
-    def _updateBallsCollisionHeap(self, idx: int, t_max: Real)\
-            -> bool:
+    def _updateBallsCollisionHeap(
+        self,
+        idx: int,
+        t_max: Real,
+    ) -> bool:
         """
         Updates the min-heap at index idx of the attribute
         balls_collision_heaps by repeatedly removing the item at the
@@ -1537,8 +1576,10 @@ class MultiBallSimulation:
             heapq.heappop(bc_heap)
         return False#()
     
-    def _constructGlobalBallsCollisionHeap(self, t_max: Real)\
-            -> List[Tuple[Real]]:
+    def _constructGlobalBallsCollisionHeap(
+        self,
+        t_max: Real,
+    ) -> List[Tuple[Real]]:
         """
         Constructs a min-heap containing the details of the earliest
         collision(s) (if any) each Ball object in the simulation is
@@ -1612,8 +1653,10 @@ class MultiBallSimulation:
         heapq.heapify(heap)
         return heap
     
-    def _constructGlobalWallCollisionHeap(self, t_max: Real)\
-            -> List[Tuple[Real]]:
+    def _constructGlobalWallCollisionHeap(
+        self,
+        t_max: Real,
+    ) -> List[Tuple[Real]]:
         """
         Constructs a min-heap containing the details of the earliest
         collision (if any) each Ball object in the simulation is
@@ -1663,8 +1706,11 @@ class MultiBallSimulation:
         heapq.heapify(heap)
         return heap
     
-    def _updateGlobalBallsCollisionHeap(self,\
-            gc_heap: List[Tuple[Real]], t_max: Real) -> bool:
+    def _updateGlobalBallsCollisionHeap(
+        self,
+        gc_heap: List[Tuple[Real]],
+        t_max: Real,
+    ) -> bool:
         """
         Updates the min-heap gc_heap (used to identify the next
         collision between any pair of Ball objects in the simulation
@@ -1740,8 +1786,10 @@ class MultiBallSimulation:
                 
         return False
     
-    def _updateGlobalWallCollisionHeap(self,\
-            gnw_heap: List[Tuple[Real]]) -> bool:
+    def _updateGlobalWallCollisionHeap(
+        self,
+        gnw_heap: List[Tuple[Real]],
+    ) -> bool:
         """
         Updates the min-heap gnw_heap (used to identify the next
         collision between a Ball object in the simulation and a wall
@@ -1780,9 +1828,14 @@ class MultiBallSimulation:
             heapq.heappop(gnw_heap)
         return False
     
-    def _updateBallsStateAfterBallsCollision(self, idx1: int,\
-            idx2: int, t_max: Real, gc_heap: List[Tuple[Real]],\
-            gnw_heap: List[Tuple[Real]]) -> None:
+    def _updateBallsStateAfterBallsCollision(
+        self,
+        idx1: int,
+        idx2: int,
+        t_max: Real,
+        gc_heap: List[Tuple[Real]],
+        gnw_heap: List[Tuple[Real]],
+    ) -> None:
         """
         Implements the necessary changes to be made immediately
         following a collision between two Ball objects in the
@@ -1897,9 +1950,13 @@ class MultiBallSimulation:
                     f"\n ball {idx2}: {bc_heap2}\n gc_heap: {gc_heap}")
         return
     
-    def _updateBallStateAfterWallCollision(self, idx: int, t_max: Real,\
-            gc_heap: List[Tuple[Real]],\
-            gnw_heap: List[Tuple[Real]]) -> None:
+    def _updateBallStateAfterWallCollision(
+        self,
+        idx: int,
+        t_max: Real,
+        gc_heap: List[Tuple[Real]],
+        gnw_heap: List[Tuple[Real]],
+    ) -> None:
         """
         Implements the necessary changes to be made immediately
         following a collision between a Ball object and a wall in the
@@ -1984,9 +2041,12 @@ class MultiBallSimulation:
                 heapq.heappush(gc_heap, ans)
         return
     
-    def _progressToNextCollision(self, t_max: Real,\
-            gc_heap: List[Tuple[Real]],\
-            gnw_heap: List[Tuple[Real]]) -> bool:
+    def _progressToNextCollision(
+        self,
+        t_max: Real,
+        gc_heap: List[Tuple[Real]],
+        gnw_heap: List[Tuple[Real]],
+    ) -> bool:
         """
         Progresses the simulation until immediately after the next
         collision due to occur in the simulation (either a collision
@@ -2093,7 +2153,11 @@ class MultiBallSimulation:
         for ball in self.balls:
             ball.t = self.t
     
-    def progressTime(self, dt: Real, check_overlap: bool=True) -> int:
+    def progressTime(
+        self,
+        dt: Real,
+        check_overlap: bool=True,
+    ) -> int:
         """
         Progresses the simulation by the time interval dt from the
         current time (attribute t). Accounts for the trajectories of
@@ -2197,8 +2261,10 @@ class MultiBallSimulation:
         return (self.calculateTotalKineticEnergy() +\
                 self.calculateTotalPotentialEnergy())
     
-    def detectAnyBallOutsideBox(self, balls_t_updated: bool=False)\
-            -> Tuple[Real]:
+    def detectAnyBallOutsideBox(
+        self,
+        balls_t_updated: bool=False,
+    ) -> Tuple[Real]:
         """
         Checks whether any Ball objects in the simulation are not
         completely contained within the box. If so, returns details
@@ -2256,8 +2322,11 @@ class MultiBallSimulation:
             return idx, axis_idx, end_idx, ball.radius, d
         return ()
     
-    def _detectBallsOverlap(self, ball: Ball, start_idx: int=0)\
-            -> Tuple[Real]:
+    def _detectBallsOverlap(
+        self,
+        ball: Ball,
+        start_idx: int=0,
+    ) -> Tuple[Real]:
         """
         For a given Ball object, checks whether it overlaps with any
         Ball object in the attribute balls for which its index in
@@ -2313,8 +2382,10 @@ class MultiBallSimulation:
                 return idx, rad_sum, d_sq
         return ()
     
-    def detectAnyBallsOverlap(self, balls_t_updated: bool=False)\
-            -> Tuple[Real]:
+    def detectAnyBallsOverlap(
+        self,
+        balls_t_updated: bool=False,
+    ) -> Tuple[Real]:
         """
         Examines all pairs of objects in the simulation until one pair
         of objects are found to overlap with each other (i.e. the
@@ -2364,7 +2435,10 @@ class MultiBallSimulation:
                 return idx1, idx2, rad_sum, d_sq
         return ()
     
-    def anyOverlapMessage(self, balls_t_updated: bool=False) -> str:
+    def anyOverlapMessage(
+        self,
+        balls_t_updated: bool=False,
+    ) -> str:
         """
         Examines every object in the simulation to check whether at
         the current time of the simulation any object is not completely

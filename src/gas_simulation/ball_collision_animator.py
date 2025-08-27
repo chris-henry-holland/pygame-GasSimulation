@@ -101,9 +101,12 @@ class Ball2DSprite(pygame.sprite.Sprite):
         draw(): Draws the sprite on the screen.
     """
     
-    def __init__(self,\
-            animation: "MultiBallSimulationAnimatorDisplay",\
-            ball: Ball, color: Tuple[int]=named_colors_def["red"]):
+    def __init__(
+        self,
+        animation: "MultiBallSimulationAnimatorDisplay",
+        ball: Ball,
+        color: Tuple[int]=named_colors_def["red"],
+    ):
         super(Ball2DSprite, self).__init__()
         
         self._animation = animation
@@ -296,12 +299,15 @@ class MultiBallSimulationAnimatorMain:
         (For full description, see documentation of the method itself)
     
     """
-    def __init__(self, dist_unit: Real=12,\
-            arena_dims: Tuple[Real]=(16, 15),\
-            framerate: Real=60,\
-            n_sim_cycle_per_frame: Real=1,\
-            borders: Tuple[Tuple[Real]]=((1, 1), (4, 1)),\
-            g: Union[Real, Tuple[Real]]=0):
+    def __init__(
+        self,
+        dist_unit: Real=12,
+        arena_dims: Tuple[Real]=(16, 15),
+        framerate: Real=60,
+        n_sim_cycle_per_frame: Real=1,
+        borders: Tuple[Tuple[Real]]=((1, 1), (4, 1)),
+        g: Union[Real, Tuple[Real]]=0,
+    ):
         pygame.init()
         
         #self.running = False
@@ -370,35 +376,52 @@ class MultiBallSimulationAnimatorMain:
     def arenaPixelPosition(self, pos: Tuple[Real]) -> Tuple[int]:
         return self.sim_animator.arenaPixelPosition(pos)
     
-    def addBall(self, m: Real, radius: Real,\
-            r0: Tuple[Real], v0: Tuple[Real],\
-            color: Tuple[int]=named_colors_def["red"],\
-            incl_borders: bool=False,\
-            balls_t_updated: bool=False,\
-            check_overlap: bool=True) -> bool:
+    def addBall(
+        self,
+        m: Real,
+        radius: Real,
+        r0: Tuple[Real],
+        v0: Tuple[Real],
+        color: Tuple[int]=named_colors_def["red"],
+        incl_borders: bool=False,
+        balls_t_updated: bool=False,
+        check_overlap: bool=True,
+    ) -> bool:
         return self.sim_animator.addBall(m, radius, r0, v0,\
                 color=color, incl_borders=incl_borders,\
                 balls_t_updated=balls_t_updated,\
                 check_overlap=check_overlap)
     
-    def run(self, print_mechE: bool=False, check_overlap: bool=True)\
-            -> None:
+    def run(
+        self,
+        print_mechE: bool=False,
+        check_overlap: bool=True,
+    ) -> None:
         self.run_simulation(print_mechE=print_mechE,\
                 check_overlap=check_overlap)
         return
     
-    def run_simulation(self, print_mechE: bool=False,\
-            check_overlap: bool=True) -> None:
+    def run_simulation(
+        self,
+        print_mechE: bool=False,
+        check_overlap: bool=True,
+    ) -> None:
         self.sim_animator.run(print_mechE=print_mechE,\
                 check_overlap=check_overlap)
         return
 
-class MultiBallSimulationAnimatorDisplay:
-    def __init__(self, main=None, dist_unit=12, arena_dims=(16, 15),
-            framerate: int=30,\
-            n_sim_cycle_per_frame: int=1,\
-            dt_sim_per_sim_cycle: Real=1,\
-            borders=((1, 1), (4, 1)), g=0):
+class MultiBallSimulationAnimatorDisplay(object):
+    def __init__(
+        self,
+        main=None,
+        dist_unit=12,
+        arena_dims=(16, 15),
+        framerate: int=30,
+        n_sim_cycle_per_frame: int=1,
+        dt_sim_per_sim_cycle: Real=1,
+        borders=((1, 1), (4, 1)),
+        g=0
+    ):
         
         self.main = main
         
@@ -521,7 +544,10 @@ class MultiBallSimulationAnimatorDisplay:
     def t(self):
         return self.sim.t_s
     
-    def screenPixelPosition(self, pos: Tuple[Real]) -> Tuple[int]:
+    def screenPixelPosition(
+        self,
+        pos: Tuple[Real],
+    ) -> Tuple[int]:
         """
         Based on the dist_unit used and the borders, calculates the actual
         pixel position of a given object on the screen.
@@ -541,12 +567,18 @@ class MultiBallSimulationAnimatorDisplay:
         """
         return tuple(round(self.dist_unit * x) for x in pos)
     
-    def arenaPixelPosition(self, pos: Tuple[Real]) -> Tuple[int]:
+    def arenaPixelPosition(
+        self,
+        pos: Tuple[Real],
+    ) -> Tuple[int]:
         return tuple(round(self.dist_unit * (x + y[0]))\
             for x, y in zip(pos, self.borders))
     
-    def checkInputs(self, extra_events: Optional[Set]=None,\
-            keys_to_check: Optional[Set]=None):
+    def checkInputs(
+        self,
+        extra_events: Optional[Set]=None,
+        keys_to_check: Optional[Set]=None
+    ) -> Tuple[bool, bool, Set["pygame.Event"], Set[int]]:
         
         if extra_events is None:
             extra_events = set()
@@ -573,12 +605,17 @@ class MultiBallSimulationAnimatorDisplay:
         return (running, quit, extra_seen,\
                 {x for x in keys_to_check if keys_pressed[x]})
     
-    def addBall(self, m: Real, radius: Real,\
-            r0: Tuple[Real], v0: Tuple[Real],\
-            color: Tuple[int]=named_colors_def["red"],\
-            incl_borders: bool=False,\
-            balls_t_updated: bool=False,\
-            check_overlap: bool=True) -> bool:
+    def addBall(
+        self,
+        m: Real,
+        radius: Real,
+        r0: Tuple[Real],
+        v0: Tuple[Real],
+        color: Tuple[int]=named_colors_def["red"],
+        incl_borders: bool=False,
+        balls_t_updated: bool=False,
+        check_overlap: bool=True,
+    ) -> bool:
         r = r0 if not incl_borders else tuple(x + y[0] for x, y in\
                 zip(r0, self.borders))
         v = tuple(x / self.dt_sim_per_sec for x in v0)
@@ -593,8 +630,11 @@ class MultiBallSimulationAnimatorDisplay:
         self.ball_sprites.add(ball_sprite)
         return True
         
-    def run(self, print_mechE: bool=False, check_overlap: bool=True)\
-            -> bool:
+    def run(
+        self,
+        print_mechE: bool=False,
+        check_overlap: bool=True,
+    ) -> bool:
         # Setup the clock for a consistent framerate
         clock = pygame.time.Clock()
         
@@ -620,9 +660,13 @@ class MultiBallSimulationAnimatorDisplay:
             clock.tick(self.framerate)
         return quit
     
-    def animationLoop(self, input_buffer_qu, prev_pressed_keys: Optional[Set]=None,\
-            print_mechE: bool=False, check_overlap: bool=True)\
-            -> Tuple[Union[bool, Optional[set]]]:
+    def animationLoop(
+        self,
+        input_buffer_qu,
+        prev_pressed_keys: Optional[Set]=None,
+        print_mechE: bool=False,
+        check_overlap: bool=True,
+    ) -> Tuple[Union[bool, Optional[set]]]:
         """
         Progresses the simulation forward by one animation frame,
         updating the display to reflect the evolution of the simulation
