@@ -1,0 +1,2 @@
+[console_scripts]
+start-gas-simulation = gas_simulation.__main__:main

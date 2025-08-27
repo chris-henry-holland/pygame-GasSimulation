@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+src/gas_simulation/__init__.py
+src/gas_simulation/__main__.py
+src/gas_simulation/ball_collision_animator.py
+src/gas_simulation/ball_collision_simulator.py
+src/gas_simulation/example_simulation_animations.py
+src/gas_simulation/utils.py
+src/gas_simulation.egg-info/PKG-INFO
+src/gas_simulation.egg-info/SOURCES.txt
+src/gas_simulation.egg-info/dependency_links.txt
+src/gas_simulation.egg-info/entry_points.txt
+src/gas_simulation.egg-info/requires.txt
+src/gas_simulation.egg-info/top_level.txt
